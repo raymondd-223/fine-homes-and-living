@@ -951,7 +951,7 @@
   var counter = document.getElementById('counter-current');
   var playBtn = document.getElementById('hero-play');
   var progress = document.getElementById('hero-progress');
-  var current = 0, timer = null, playing = !reduceMotion, hovering = false, focused = false;
+  var current = 0, timer = null, playing = !reduceMotion;
   hero.style.setProperty('--interval', INTERVAL + 'ms');
 
   function pad(n){ return (n < 10 ? '0' : '') + n; }
@@ -982,7 +982,7 @@
 
   function start(){
     stop();
-    if(!playing || hovering || focused) { hero.classList.remove('is-playing'); return; }
+    if(!playing) { hero.classList.remove('is-playing'); return; }
     hero.classList.add('is-playing');
     restartProgress();
     timer = setInterval(tick, INTERVAL);
@@ -1004,10 +1004,6 @@
   dots.forEach(function(d){ d.addEventListener('click', function(){ show(parseInt(d.dataset.goto, 10)); start(); }); });
   playBtn.addEventListener('click', function(){ setPlaying(!playing); });
 
-  hero.addEventListener('mouseenter', function(){ hovering = true; start(); });
-  hero.addEventListener('mouseleave', function(){ hovering = false; start(); });
-  hero.addEventListener('focusin', function(){ focused = true; start(); });
-  hero.addEventListener('focusout', function(e){ if(!hero.contains(e.relatedTarget)){ focused = false; start(); } });
   hero.addEventListener('keydown', function(e){
     if(e.key === 'ArrowRight'){ show(current + 1); }
     if(e.key === 'ArrowLeft'){ show(current - 1); }
